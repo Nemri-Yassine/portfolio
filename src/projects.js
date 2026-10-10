@@ -1,7 +1,41 @@
 // Showcased projects. Screenshots live in public/shots (captured with scripts/shoot.mjs).
 const shot = (name, caption) => ({ src: `shots/${name}.webp`, caption });
+// A shot with `video` plays that clip in the case study; `src` is its poster.
 
 export const projects = [
+  {
+    id: 'plates',
+    name: 'Licence Plate Recognition',
+    tagline: 'Detects, reads and tracks licence plates in Latin or Arabic script, and measures vehicle speed.',
+    year: '2026',
+    role: 'Computer vision & ML engineering',
+    kind: 'Computer Vision · AI',
+    summary:
+      'A pipeline that finds licence plates in images, videos, webcams or RTSP streams, reads them in Latin or Arabic script (including Tunisian تونس plates) and follows every vehicle across frames. Each vehicle gets one stable reading through multi-frame voting, and its speed is estimated by mapping road markings to metres. Results are exported to Excel, CSV and JSON. The first version dates from 2022; v2 rebuilds it from scratch with 2026 models: same idea, new technology.',
+    highlights: [
+      'YOLO11 plate detector fine-tuned on ~10k plates, with tiled zoom for small, distant plates',
+      'Multilingual OCR: fast-plate-ocr for 60+ countries (predicts the country) and EasyOCR English/Arabic',
+      'SORT tracking, plate-to-vehicle linking and multi-frame consensus: one reading per vehicle',
+      'Speed in km/h: homography from lane markings, robust least-squares fit, occlusion and frame-edge checks',
+      'Reports: results.xlsx (vehicles, plates, speed log), CSV, JSON, plate crops and an annotated video',
+      'Fully offline inference, models pinned with SHA-256 checksums, unit-tested',
+    ],
+    stack: ['Python 3.12', 'YOLO11 / Ultralytics', 'PyTorch', 'OpenCV', 'fast-plate-ocr', 'EasyOCR', 'ONNX Runtime', 'SORT', 'SciPy', 'openpyxl'],
+    metrics: [
+      ['60+', 'countries read'],
+      ['2', 'scripts: Latin & Arabic'],
+      ['km/h', 'speed per vehicle'],
+    ],
+    links: [],
+    shots: [
+      { src: 'shots/lpr-live.webp', video: 'video/plate-recognition.mp4', caption: 'Video demo (42 s)' },
+      shot('lpr-live', 'Live analysis: tracking, plate reading and speed on 4K traffic'),
+      shot('lpr-plates', 'Latin and Arabic plates, with the predicted country'),
+      shot('lpr-then-now', '2022 pipeline vs v2 on the same frames'),
+      shot('lpr-excel', 'Excel report: one row per vehicle, with speed'),
+      shot('lpr-stack', 'Under the hood'),
+    ],
+  },
   {
     id: 'learnova',
     name: 'Learnova',

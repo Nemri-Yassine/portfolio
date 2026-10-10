@@ -457,6 +457,11 @@ a, button, [role="button"], .chips span, label {
 .case__gallery { position: sticky; top: 90px; align-self: start; }
 .case__stage { margin: 0; border-radius: 18px; overflow: hidden; background: color-mix(in srgb, var(--ivory) 5%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--ivory) 12%, transparent), 0 40px 80px -30px var(--ember); position: relative; }
 .case__stage img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+.case__stage video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.case__stage video:not([hidden]) ~ figcaption { display: none; }
+.case__stage [hidden] { display: none; }
+.case__thumbs button.is-video { position: relative; }
+.case__thumbs button.is-video::after { content: '▶'; position: absolute; inset: 0; display: grid; place-items: center; font-size: 22px; color: var(--ivory); background: color-mix(in srgb, var(--ink) 45%, transparent); }
 .case__stage figcaption { position: absolute; left: 14px; bottom: 14px; padding: 8px 12px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 70%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .case__thumbs { display: flex; gap: 10px; margin-top: 14px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
 .case__thumbs button { flex: none; width: 128px; border-radius: 10px; overflow: hidden; opacity: .45; outline: 1px solid transparent; transition: opacity .3s, outline-color .3s, transform .4s var(--ease); }

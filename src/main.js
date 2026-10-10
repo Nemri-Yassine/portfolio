@@ -15,13 +15,16 @@ const COLORS = { ink: '#0C0E13', ivory: '#F2ECE3', ember: '#FF5B35' };
    Projects
    ------------------------------------------------------------------ */
 function renderProjects() {
-  $('.projects').innerHTML = projects.map((p, i) => `
+  $('.projects').innerHTML = projects.map((p, i) => {
+    const screens = p.shots.filter((s) => !s.video);
+    const count = `${screens.length} screens`;
+    return `
     <article class="project" data-reveal-card tabindex="0" role="button" data-id="${p.id}" aria-label="Open the ${p.name} case study">
       <div class="project__frame">
         <span class="mono project__num">${String(i + 1).padStart(2, '0')} · ${p.kind}</span>
-        <span class="mono project__count">${p.shots.length} screens</span>
+        <span class="mono project__count">${screens.length < p.shots.length ? `▶ Video + ${count}` : count}</span>
         <div class="stack">
-          ${p.shots.slice(0, 4).map((s) => `<div class="stack__card"><img src="${s.src}" alt="${p.name}: ${s.caption}" loading="lazy" decoding="async"/></div>`).join('')}
+          ${screens.slice(0, 4).map((s) => `<div class="stack__card"><img src="${s.src}" alt="${p.name}: ${s.caption}" loading="lazy" decoding="async"/></div>`).join('')}
         </div>
       </div>
       <div class="project__body">
@@ -34,7 +37,8 @@ function renderProjects() {
       <div class="project__metrics">
         ${p.metrics.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join('')}
       </div>
-    </article>`).join('');
+    </article>`;
+  }).join('');
 
   $$('.project').forEach((card) => {
     const frame = $('.project__frame', card);
@@ -515,9 +519,19 @@ function showShot(i) {
   const shots = current.shots;
   shotIndex = (i + shots.length) % shots.length;
   const img = $('.case__stage img');
+  const video = $('.case__stage video');
   const s = shots[shotIndex];
-  gsap.fromTo(img, { opacity: 0, scale: 1.03 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'expo.out' });
-  img.src = s.src; img.alt = `${current.name}: ${s.caption}`;
+  video.pause();
+  img.hidden = !!s.video;
+  video.hidden = !s.video;
+  const media = s.video ? video : img;
+  gsap.fromTo(media, { opacity: 0, scale: 1.03 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'expo.out' });
+  if (s.video) {
+    if (!video.src.endsWith(s.video)) { video.poster = s.src; video.src = s.video; }
+    video.setAttribute('aria-label', `${current.name}: ${s.caption}`);
+  } else {
+    img.src = s.src; img.alt = `${current.name}: ${s.caption}`;
+  }
   $('.case__stage figcaption').textContent = s.caption;
   $('.case__count').textContent = `${String(shotIndex + 1).padStart(2, '0')} / ${String(shots.length).padStart(2, '0')}`;
   $$('.case__thumbs button').forEach((b, j) => b.classList.toggle('is-active', j === shotIndex));
@@ -539,7 +553,7 @@ function openCase(id, from) {
   $('.case__links').innerHTML = current.links.length
     ? current.links.map(([l, u]) => `<a class="btn btn--ember magnetic" href="${u}" target="_blank" rel="noopener">${l} <span class="arrow">↗</span></a>`).join('')
     : '<span class="mono" style="opacity:.5">Private project · demo on request</span>';
-  $('.case__thumbs').innerHTML = current.shots.map((s, i) => `<button aria-label="Show ${s.caption}"><img src="${s.src}" alt="" loading="lazy"/></button>`).join('');
+  $('.case__thumbs').innerHTML = current.shots.map((s, i) => `<button aria-label="Show ${s.caption}"${s.video ? ' class="is-video"' : ''}><img src="${s.src}" alt="" loading="lazy"/></button>`).join('');
   $$('.case__thumbs button').forEach((b, i) => b.addEventListener('click', () => showShot(i)));
   showShot(0);
 
@@ -560,6 +574,8 @@ function closeCase() {
   gsap.to(caseEl, {
     clipPath: 'inset(0% 0% 100% 0% round 0px 0px 48px 48px)', duration: 0.8, ease: 'expo.inOut',
     onComplete: () => {
+      const video = $('.case__stage video');
+      video.pause(); video.removeAttribute('src'); video.load();
       caseEl.classList.remove('is-open');
       caseEl.setAttribute('aria-hidden', 'true');
       document.documentElement.style.overflow = '';
@@ -575,6 +591,7 @@ function initCase() {
   addEventListener('keydown', (e) => {
     if (!caseEl.classList.contains('is-open')) { if (e.key === 'Escape') closeMenu(); return; }
     if (e.key === 'Escape') closeCase();
+    if (e.target.tagName === 'VIDEO') return; // arrows seek the video
     if (e.key === 'ArrowRight') showShot(shotIndex + 1);
     if (e.key === 'ArrowLeft') showShot(shotIndex - 1);
   });
