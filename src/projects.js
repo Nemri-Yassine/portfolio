@@ -13,7 +13,7 @@ export const projects = [
     summary:
       'A pipeline that finds licence plates in images, videos, webcams or RTSP streams, reads them in Latin or Arabic script (including Tunisian تونس plates) and follows every vehicle across frames. Each vehicle gets one stable reading through multi-frame voting, and its speed is estimated by mapping road markings to metres. Results are exported to Excel, CSV and JSON. The first version dates from 2022; v2 rebuilds it from scratch with 2026 models: same idea, new technology.',
     highlights: [
-      'YOLO11 plate detector fine-tuned on ~10k plates, with tiled zoom for small, distant plates',
+      'Pretrained YOLO11 plate detector (fine-tuned on ~10k plates), with tiled zoom for small, distant plates',
       'Multilingual OCR: fast-plate-ocr for 60+ countries (predicts the country) and EasyOCR English/Arabic',
       'SORT tracking, plate-to-vehicle linking and multi-frame consensus: one reading per vehicle',
       'Speed in km/h: homography from lane markings, robust least-squares fit, occlusion and frame-edge checks',
@@ -58,7 +58,7 @@ export const projects = [
       ['Async', 'FastAPI + asyncpg'],
       ['Local or cloud', 'Ollama / OpenAI'],
     ],
-    links: [['GitHub', 'https://github.com/lebron79/Learnova']],
+    links: [['GitHub', 'https://github.com/Nemri-Yassine/Learnova']],
     shots: [
       shot('learnova-exam-results', 'Exam results with per-concept performance'),
       shot('learnova-gap', 'Knowledge-gap analysis'),
@@ -77,19 +77,21 @@ export const projects = [
     role: 'Data & full-stack (team project)',
     kind: 'ML · Market data',
     summary:
-      'Scrapes 1,236 smartphones from five Tunisian retailers, cleans and merges them, and serves a machine-learning price predictor alongside recommendations, comparisons and a live market dashboard. Deployed end to end with Docker on Render, Vercel and MongoDB Atlas, with experiments tracked in MLflow.',
+      'Scrapes 1,236 smartphones from five Tunisian retailers, cleans and merges them, and serves a machine-learning price predictor alongside recommendations, comparisons and a live market dashboard. Deployed end to end with Docker on Render, Vercel and MongoDB Atlas. An audit of the first model’s R² of 0.9998 found target leakage and a price-parsing bug; the rebuilt model is validated on phones it has never seen.',
     highlights: [
       'Multi-store scraping pipeline with a weekly scheduler',
-      'KNN price model: R² = 0.9998, MAE ≈ 4–33 TND',
+      'Gradient boosting price model: within 14% on unseen phones (R² 0.87), half the error of a brand-median baseline',
+      'Found and fixed target leakage (features computed from the price) and a scraper bug that listed 97 phones at 1–4 TND',
+      'Cross-validation grouped by phone, so colour and store duplicates never leak into the test set',
       'Recommendations by budget, specs and use case',
       'Market dashboard: price segments, OS share, store comparison',
       'JWT auth, reviews, trending and 90-day price history',
     ],
-    stack: ['Python', 'scikit-learn', 'MLflow', 'FastAPI', 'React', 'TypeScript', 'MongoDB', 'Docker', 'BeautifulSoup'],
+    stack: ['Python', 'pandas', 'scikit-learn', 'MLflow', 'FastAPI', 'React', 'TypeScript', 'MongoDB', 'Docker', 'BeautifulSoup'],
     metrics: [
-      ['1,236', 'phones indexed'],
-      ['5', 'retailers scraped'],
-      ['0.9998', 'R² price model'],
+      ['1,236', 'listings from 5 retailers'],
+      ['14%', 'error on unseen phones'],
+      ['0.87', 'R², grouped CV'],
     ],
     links: [
       ['Live app', 'https://tuni-tech-advisor.vercel.app'],
