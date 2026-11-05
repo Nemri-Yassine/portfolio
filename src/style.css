@@ -454,7 +454,7 @@ a, button, [role="button"], .chips span, label {
 .case__highlights li { position: relative; padding-left: 26px; font-size: 15.5px; }
 .case__highlights li::before { content: '✦'; position: absolute; left: 0; color: var(--ember); font-size: 12px; top: 3px; }
 .case__links { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; }
-.case__gallery { position: sticky; top: 90px; align-self: start; }
+.case__gallery { position: sticky; top: 90px; align-self: start; min-width: 0; }
 .case__stage { margin: 0; border-radius: 18px; overflow: hidden; background: color-mix(in srgb, var(--ivory) 5%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--ivory) 12%, transparent), 0 40px 80px -30px var(--ember); position: relative; }
 .case__stage img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
 .case__stage video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }

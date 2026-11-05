@@ -4,6 +4,44 @@ const shot = (name, caption) => ({ src: `shots/${name}.webp`, caption });
 
 export const projects = [
   {
+    id: 'gym-coach',
+    name: 'AI Gym Coach',
+    tagline: 'A phone camera and smartwatch coach that aims to tell you when to stop, before fatigue turns into injury.',
+    year: '2026 – Present',
+    role: 'Deep learning & big data (team of 2)',
+    kind: 'In progress · Deep Learning · Big Data',
+    summary:
+      'A Deep Learning and Big Data course project, in progress and moving well. The goal is a coach that watches you train with a phone camera and a Galaxy Watch 7, recognizes the exercise, counts reps, checks the form of each rep, and compares today’s session with your own past sessions to warn you before fatigue becomes a risk. Exercise recognition, rep counting, the Spark pipeline and the gym recorder app are built and measured, and form checking has its first benchmark. Next come live Kafka streaming, recording our own sessions, the personal fatigue model and the live voice coach.',
+    highlights: [
+      'Exercise recognition: transformer on pose + watch motion, macro-F1 0.88 on people it never saw (target 0.85)',
+      'Rep counter: found and fixed a bug that halved alternating exercises; error down from 1.35 to 0.49 reps per set on 616 sets',
+      'Tested outside the training data: 80.8% of 78 public gym videos recognized from the camera alone',
+      'Spark job puts pose, watch motion and heart rate on one clock: 1.46M rows from 21 sessions',
+      'Form check benchmark: ST-GCN, LSTM and random forest tested on unseen people; a first result, with squats still at about 56%',
+      'Gym recorder web app built for phone and watch; our own sessions are the next data to collect',
+    ],
+    stack: ['Python', 'PyTorch', 'MediaPipe', 'Transformers', 'ST-GCN', 'Apache Spark', 'Apache Kafka', 'scikit-learn', 'Parquet', 'Galaxy Watch 7'],
+    metrics: [
+      ['0.88', 'macro-F1, unseen people'],
+      ['0.49', 'reps of error per set'],
+      ['2 of 3', 'models benchmarked'],
+    ],
+    links: [
+      ['GitHub', 'https://github.com/Nemri-Yassine/ai-gym-coach'],
+      ['Gym recorder', 'https://nemri-yassine.github.io/ai-gym-coach/gym/'],
+    ],
+    shots: [
+      shot('gym-idea', 'The idea: a coach that tells you when to stop'),
+      shot('gym-progress', 'Where the project stands, November 2026'),
+      shot('gym-m1', 'Model 1 recognizing an exercise on a person it never saw'),
+      shot('gym-how', 'From the gym floor to the alert: the planned system'),
+      shot('gym-reps', 'Rep counting: the bug, then the fix'),
+      shot('gym-spark', 'Spark puts three streams on one clock'),
+      shot('gym-w1', 'Week 1 results'),
+      shot('gym-recorder', 'Gym recorder web app'),
+    ],
+  },
+  {
     id: 'plates',
     name: 'Licence Plate Recognition',
     tagline: 'Detects, reads and tracks licence plates in Latin or Arabic script, and measures vehicle speed.',
